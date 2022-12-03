@@ -1,18 +1,25 @@
-const fetchApi = async () => {
-  const url = 'https://jsonplaceholder.typicode.com/todos';
+import getAllProductsQuery from '../../utils /queries/getAllProducts';
+
+type FetchedParams = {
+  query: string;
+};
+
+const fetchApi = async ({ query }: FetchedParams) => {
+  const url = 'http://localhost:4000/graphql';
 
   const response = await fetch(url, {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({ query }),
   });
   const data = await response.json();
   return { data };
 };
 
 const getAllProducts = async (): Promise<any[]> => {
-  const products = await fetchApi();
+  const products = await fetchApi({ query: getAllProductsQuery });
 
   return products.data;
 };
