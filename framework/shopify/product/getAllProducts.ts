@@ -1,27 +1,20 @@
-import getAllProductsQuery from '../../utils /queries/getAllProducts';
+import fetchApi from '../utils/fetchApi';
+import getAllProductsQuery from '../utils/queries/getAllProducts';
+import { ProductConnection } from '../schema';
+import { normalizeProduct } from '../utils/normalize';
 
-type FetchedParams = {
-  query: string;
+type ReturnType = {
+  products: ProductConnection;
 };
 
-const fetchApi = async ({ query }: FetchedParams) => {
-  const url = 'http://localhost:4000/graphql';
+const getAllProducts = async (): Promise<any> => {
+  const { data } = await fetchApi<ReturnType>({ query: getAllProductsQuery });
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ query }),
-  });
-  const data = await response.json();
-  return { data };
-};
+  const products = data.products.edges.map(({ node: product }) => {
+   return normalizeProduct(product);
+  }) ?? [];
 
-const getAllProducts = async (): Promise<any[]> => {
-  const products = await fetchApi({ query: getAllProductsQuery });
-
-  return products.data;
+  return products;
 };
 
 export default getAllProducts;
