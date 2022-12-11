@@ -1,5 +1,5 @@
 import { InferGetServerSidePropsType } from "next"
-import getAllProducts from "../framework/shopify/product/getAllProducts";
+import getAllProducts from "@framework/product/getAllProducts";
 
 export async function getStaticProps() {
   const products = await getAllProducts();
