@@ -1,6 +1,8 @@
 import { InferGetServerSidePropsType } from "next"
 import getAllProducts from "@framework/product/getAllProducts";
 import { getConfig } from "@framework/api/config";
+import { Layout } from '@components/common';
+
 
 export async function getStaticProps() {
   const config = getConfig();
@@ -15,7 +17,11 @@ export async function getStaticProps() {
 }
 
 export default function Home({ products }: InferGetServerSidePropsType<typeof getStaticProps>) {
-  return <div>
-    {JSON.stringify(products)}
-  </div>
+  return (
+    <div>
+      {JSON.stringify(products)}
+    </div>
+  )
 }
+
+Home.Layout = Layout;
